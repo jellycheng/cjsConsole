@@ -209,13 +209,12 @@ class Event{
     public function cron($expression)
     {
         $this->expression = $expression;
-
         return $this;
     }
 
     /**
      * Schedule the event to run hourly.
-     *
+     * 每小时执行一次
      * @return $this
      */
     public function hourly()
@@ -225,7 +224,7 @@ class Event{
 
     /**
      * Schedule the event to run daily.
-     *
+     * 每天执行
      * @return $this
      */
     public function daily()
