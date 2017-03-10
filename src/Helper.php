@@ -1,6 +1,7 @@
 <?php
 namespace CjsConsole;
 
+use Closure;
 use CjsConsole\ConsoleConfig;
 function base_path(){
 
@@ -16,5 +17,18 @@ function base_path(){
 function isDownForMaintenance()
 {
     return ConsoleConfig::getInstance()->isDownForMaintenance();
+}
+
+function share(Closure $closure)
+{
+    return function($container) use ($closure)
+    {
+        static $object;
+        if (is_null($object))
+        {
+            $object = $closure($container);
+        }
+        return $object;
+    };
 }
 

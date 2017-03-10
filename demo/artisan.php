@@ -7,11 +7,13 @@ require_once __DIR__ . '/common.php';
 //Console config todo
 
 
+$input = '';
+$output = '';
 $ConsoleObj = \CjsConsole\ConsoleApp::getInstance();
+$kernel = new \ConsoleDemo\Kernel($ConsoleObj);
 
-
-$status = 0;
-$ConsoleObj->terminate($input, $status);
+$status = $kernel->handle($input, $output);
+$kernel->terminate($input, $status);
 
 exit($status);
 
