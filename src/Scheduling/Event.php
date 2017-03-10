@@ -3,6 +3,8 @@ namespace CjsConsole\Scheduling;
 
 use Closure;
 use CjsConsole\Process\Process;
+use CjsConsole\Carbon;
+
 class Event{
 
     protected $command;
@@ -429,7 +431,6 @@ class Event{
     public function days($days)
     {
         $days = is_array($days) ? $days : func_get_args();
-
         return $this->spliceIntoPosition(5, implode(',', $days));
     }
 
@@ -442,7 +443,6 @@ class Event{
     public function timezone($timezone)
     {
         $this->timezone = $timezone;
-
         return $this;
     }
 
@@ -455,7 +455,6 @@ class Event{
     public function user($user)
     {
         $this->user = $user;
-
         return $this;
     }
 
@@ -468,7 +467,6 @@ class Event{
     public function environments($environments)
     {
         $this->environments = is_array($environments) ? $environments : func_get_args();
-
         return $this;
     }
 
@@ -479,7 +477,6 @@ class Event{
     public function evenInMaintenanceMode()
     {
         $this->evenInMaintenanceMode = true;
-
         return $this;
     }
 
@@ -492,7 +489,6 @@ class Event{
     public function when(Closure $callback)
     {
         $this->filter = $callback;
-
         return $this;
     }
 
@@ -505,7 +501,6 @@ class Event{
     public function skip(Closure $callback)
     {
         $this->reject = $callback;
-
         return $this;
     }
 
@@ -518,7 +513,6 @@ class Event{
     public function sendOutputTo($location)
     {
         $this->output = $location;
-
         return $this;
     }
 
@@ -539,8 +533,8 @@ class Event{
     }
 
     /**
-     * Register a callback to the ping a given URL after the job runs.
-     *
+     * 在预定工作执行之后 Ping 一个给定的 URL
+     * $schedule->command('foo')->thenPing($url);
      * @param  string  $url
      * @return $this
      */
@@ -558,7 +552,6 @@ class Event{
     public function then(Closure $callback)
     {
         $this->afterCallbacks[] = $callback;
-
         return $this;
     }
 
