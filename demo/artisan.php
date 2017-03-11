@@ -9,7 +9,7 @@ require_once __DIR__ . '/common.php';
 
 $input = null;
 $output = null;
-$ConsoleObj = \CjsConsole\ConsoleApp::getInstance();
+$ConsoleObj = \CjsConsole\ConsoleApp::getInstance("cjs console", '1.0.0');
 $kernel = new \ConsoleDemo\Kernel($ConsoleObj);
 
 $status = $kernel->handle($input, $output);

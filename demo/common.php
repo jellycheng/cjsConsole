@@ -1,6 +1,4 @@
 <?php
-
-
 $vendorFile = dirname(__DIR__)  .  '/vendor/autoload.php';
 if(file_exists($vendorFile)) {
     require $vendorFile;

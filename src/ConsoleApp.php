@@ -64,9 +64,38 @@ class ConsoleApp {
         return $command;
     }
 
+    public function resolveCommands($commands)
+    {
+        $commands = is_array($commands) ? $commands : func_get_args();
+        foreach ($commands as $command)
+        {//循环每个命令
+            $commandObj = new $command();
+            $this->add($commandObj);
+        }
+        return $this;
+    }
+
+    public function add(Command $command)
+    {
+        $command->setApplication($this);
+        if (!$command->isEnabled()) {//命令未开启
+            $command->setApplication(null); //清空console app对象
+            return;
+        }
+        if (null === $command->getDefinition()) {
+            throw new \LogicException(sprintf('Command class "%s" is not correctly initialized. You probably forgot to call the parent constructor.', get_class($command)));
+        }
+        $this->commands[$command->getName()] = $command;
+        foreach ($command->getAliases() as $alias) {
+            $this->commands[$alias] = $command;
+        }
+        return $command;
+    }
 
     public function run($input = null , $output = null) {
-        echo '实例化所有command类' . PHP_EOL; //todo
+        echo '开始实例化所有command类' . PHP_EOL;
+        $this->resolveCommands($this->commandConfig);
+
         if (null === $input) {
             $input = new ArgvInput();
         }
@@ -79,6 +108,7 @@ class ConsoleApp {
         try {
             $exitCode = $this->doRun($input, $output);
         } catch (\Exception $e) {
+            echo $e->getMessage();
             if (!$this->catchExceptions) {
                 throw $e;
             }
@@ -104,7 +134,7 @@ class ConsoleApp {
         return $exitCode;
     }
 
-    public function doRun($input, $output)
+    public function doRun(InputInterface $input, OutputInterface $output)
     {
         if (true === $input->hasParameterOption(array('--version', '-V'))) {
             $output->writeln($this->getLongVersion());
@@ -132,23 +162,31 @@ class ConsoleApp {
         $this->runningCommand = null;
 
         return $exitCode;
+    }
+
+    protected function doRunCommand(Command $command, InputInterface $input, OutputInterface $output)
+    {
+//        foreach ($command->getHelperSet() as $helper) {
+//            if ($helper instanceof InputAwareInterface) {
+//                $helper->setInput($input);
+//            }
+//        }
+
+        return $command->run($input, $output);
 
     }
 
     public function find($name)
     {
-        $allCommands = array_keys($this->commands);
+        $allCommands = array_keys($this->commands);//所有命令
         $expr = preg_replace_callback('{([^:]+|)}', function ($matches) { return preg_quote($matches[1]).'[^:]*'; }, $name);
         $commands = preg_grep('{^'.$expr.'}', $allCommands);
 
         if (empty($commands) || count(preg_grep('{^'.$expr.'$}', $commands)) < 1) {
-            if (false !== $pos = strrpos($name, ':')) {
-                // check if a namespace exists and contains commands
+            if (false !== $pos = strrpos($name, ':')) {// make:controller
                 $this->findNamespace(substr($name, 0, $pos));
             }
-
             $message = sprintf('Command "%s" is not defined.', $name);
-
             if ($alternatives = $this->findAlternatives($name, $allCommands, array())) {
                 if (1 == count($alternatives)) {
                     $message .= "\n\nDid you mean this?\n    ";
@@ -157,7 +195,6 @@ class ConsoleApp {
                 }
                 $message .= implode("\n    ", $alternatives);
             }
-
             throw new \InvalidArgumentException($message);
         }
 
@@ -174,11 +211,51 @@ class ConsoleApp {
         $exact = in_array($name, $commands, true);
         if (count($commands) > 1 && !$exact) {
             $suggestions = $this->getAbbreviationSuggestions(array_values($commands));
-
             throw new \InvalidArgumentException(sprintf('Command "%s" is ambiguous (%s).', $name, $suggestions));
         }
 
         return $this->get($exact ? $name : reset($commands));
+    }
+
+    public function getNamespaces()
+    {
+        $namespaces = array();
+        foreach ($this->commands as $command) {
+            $namespaces = array_merge($namespaces, $this->extractAllNamespaces($command->getName()));
+
+            foreach ($command->getAliases() as $alias) {
+                $namespaces = array_merge($namespaces, $this->extractAllNamespaces($alias));
+            }
+        }
+        return array_values(array_unique(array_filter($namespaces)));
+    }
+
+    public function findNamespace($namespace)
+    {
+        $allNamespaces = $this->getNamespaces();
+        $expr = preg_replace_callback('{([^:]+|)}', function ($matches) { return preg_quote($matches[1]).'[^:]*'; }, $namespace);
+        $namespaces = preg_grep('{^'.$expr.'}', $allNamespaces);
+
+        if (empty($namespaces)) {
+            $message = sprintf('There are no commands defined in the "%s" namespace.', $namespace);
+
+            if ($alternatives = $this->findAlternatives($namespace, $allNamespaces, array())) {
+                if (1 == count($alternatives)) {
+                    $message .= "\n\nDid you mean this?\n    ";
+                } else {
+                    $message .= "\n\nDid you mean one of these?\n    ";
+                }
+                $message .= implode("\n    ", $alternatives);
+            }
+            throw new \InvalidArgumentException($message);
+        }
+
+        $exact = in_array($namespace, $namespaces, true);
+        if (count($namespaces) > 1 && !$exact) {
+            throw new \InvalidArgumentException(sprintf('The namespace "%s" is ambiguous (%s).', $namespace, $this->getAbbreviationSuggestions(array_values($namespaces))));
+        }
+
+        return $exact ? $namespace : reset($namespaces);
     }
 
     public function get($name)
@@ -313,9 +390,34 @@ class ConsoleApp {
         $this->name = $name;
     }
 
+    public function getVersion()
+    {
+        return $this->version;
+    }
+
     protected function getCommandName(InputInterface $input)
     {
         return $input->getFirstArgument();
+    }
+
+    private function extractAllNamespaces($name)
+    {
+        //则返回除了最后一个元素外的所有元素
+        $parts = explode(':', $name, -1);
+        $namespaces = array();
+        foreach ($parts as $part) {
+            if (count($namespaces)) {
+                $namespaces[] = end($namespaces).':'.$part;
+            } else {
+                $namespaces[] = $part;
+            }
+        }
+        return $namespaces;
+    }
+
+    private function getAbbreviationSuggestions($abbrevs)
+    {
+        return sprintf('%s, %s%s', $abbrevs[0], $abbrevs[1], count($abbrevs) > 2 ? sprintf(' and %d more', count($abbrevs) - 2) : '');
     }
 
     public function getSchedule() {

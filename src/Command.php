@@ -1,6 +1,10 @@
 <?php
 namespace CjsConsole;
 
+use CjsConsole\Input\InputDefinition;
+use CjsConsole\Contracts\OutputInterface;
+use CjsConsole\Contracts\InputInterface;
+
 class Command{
 
     protected $name;
@@ -24,9 +28,13 @@ class Command{
 
     public function __construct($name = null)
     {
+        $this->definition = new InputDefinition();
+
         if (null !== $name) {
             $this->setName($name);
         }
+
+        $this->configure();
 
         if (!$this->name) {
             throw new \LogicException(sprintf('The command defined in "%s" cannot have an empty name.', get_class($this)));
@@ -34,11 +42,68 @@ class Command{
 
     }
 
+    protected function configure()
+    {
+    }
+
     public function run($input, $output)
     {
         $this->input = $input;
         $this->output = $output;
+        $this->getSynopsis();
 
+        // add the application arguments and options
+        //$this->mergeApplicationDefinition();
+
+        // bind the input against the command specific arguments/options
+        try {
+            $input->bind($this->definition);
+        } catch (\Exception $e) {
+            if (!$this->ignoreValidationErrors) {
+                throw $e;
+            }
+        }
+
+        $this->initialize($input, $output);
+
+        if (null !== $this->processTitle) {
+            if (function_exists('cli_set_process_title')) {
+                cli_set_process_title($this->processTitle);
+            } elseif (function_exists('setproctitle')) {
+                setproctitle($this->processTitle);
+            } elseif (OutputInterface::VERBOSITY_VERY_VERBOSE === $output->getVerbosity()) {
+                $output->writeln('<comment>Install the proctitle PECL to be able to change the process title.</comment>');
+            }
+        }
+
+        if ($input->isInteractive()) {
+            $this->interact($input, $output);
+        }
+
+        $input->validate();
+
+        if ($this->code) {
+            $statusCode = call_user_func($this->code, $input, $output);
+        } else {
+            $statusCode = $this->execute($input, $output);
+        }
+
+        return is_numeric($statusCode) ? (int) $statusCode : 0;
+    }
+
+    protected function initialize(InputInterface $input, OutputInterface $output)
+    {
+    }
+
+    protected function interact(InputInterface $input, OutputInterface $output)
+    {
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $method = method_exists($this, 'handle') ? 'handle' : 'fire';
+        return call_user_func_array([$this, $method], []);
+        //throw new \LogicException('You must override the execute() method in the concrete command class.');
     }
 
     public function ignoreValidationErrors()
@@ -179,6 +244,22 @@ class Command{
     public function getDefinition()
     {
         return $this->definition;
+    }
+
+
+    public function isEnabled()
+    {
+        return true;
+    }
+
+
+    public function getSynopsis()
+    {
+        if (null === $this->synopsis) {
+            $this->synopsis = trim(sprintf('%s %s', $this->name, $this->definition->getSynopsis()));
+        }
+
+        return $this->synopsis;
     }
 
 }
