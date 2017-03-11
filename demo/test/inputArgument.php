@@ -1,7 +1,6 @@
 <?php
 require_once dirname(__DIR__) . '/common.php';
 
-
 use \CjsConsole\Input\InputArgument;
 $argObj = new InputArgument('command', InputArgument::REQUIRED, 'The command to execute');
 echo $argObj->getName() . PHP_EOL;

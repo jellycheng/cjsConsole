@@ -1,7 +1,8 @@
 <?php
 namespace CjsConsole\input;
+use CjsConsole\Contracts\InputInterface;
 
-abstract class Input
+abstract class Input implements InputInterface
 {
     /**
      * @var InputDefinition

@@ -15,12 +15,12 @@ use CjsConsole\Output\BufferedOutput;
  */
 class InputDefinition
 {
-    private $arguments;
-    private $requiredCount;
+    private $arguments = []; //['参数名1'=>对象,]
+    private $requiredCount = 0; //必须参数个数
     private $hasAnArrayArgument = false;
     private $hasOptional;
-    private $options;
-    private $shortcuts;
+    private $options;//['选项'=>对象,]
+    private $shortcuts;//['短选项名'=>全选项名,]
 
     public function __construct(array $definition = array())
     {
@@ -33,12 +33,11 @@ class InputDefinition
         $options = array();
         foreach ($definition as $item) {
             if ($item instanceof InputOption) {
-                $options[] = $item;
+                $options[] = $item;//选项对象
             } else {
-                $arguments[] = $item;
+                $arguments[] = $item;//参数对象
             }
         }
-
         $this->setArguments($arguments);
         $this->setOptions($options);
     }

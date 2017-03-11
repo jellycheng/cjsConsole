@@ -17,7 +17,7 @@ class ArgvInput extends Input
             $argv = $_SERVER['argv'];
         }
 
-        //去掉cli入口文件名
+        //去掉cli入口文件名,即去掉第1个单元
         array_shift($argv);
         $this->tokens = $argv;
         parent::__construct($definition);

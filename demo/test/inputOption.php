@@ -17,3 +17,11 @@ echo 'name: ' . $ioObj->getName() . PHP_EOL;
 echo 'shortcut: ' . $ioObj->getShortcut() . PHP_EOL;
 echo 'default: ' . $ioObj->getDefault() . PHP_EOL;
 echo 'description: ' . $ioObj->getDescription() . PHP_EOL;
+
+
+$envOpt = new InputOption('--env', null, InputOption::VALUE_OPTIONAL, "通过选项设置env环境,--env=dev");
+echo 'name: ' . $envOpt->getName() . PHP_EOL;
+echo 'shortcut: ' . $envOpt->getShortcut() . PHP_EOL;
+echo 'default: ' . $envOpt->getDefault() . PHP_EOL;
+echo 'description: ' . $envOpt->getDescription() . PHP_EOL;
+
