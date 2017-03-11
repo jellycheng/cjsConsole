@@ -6,6 +6,7 @@ class ScheduleRunCommand extends Command {
 
 	/**
 	 * The console command name.
+	 * 其实就是php artisan 后的第1个参数名  如cli执行: php artisan schedule:run
 	 * @var string
 	 */
 	protected $name = 'schedule:run';

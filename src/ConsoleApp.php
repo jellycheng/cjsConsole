@@ -2,14 +2,17 @@
 namespace CjsConsole;
 
 use CjsConsole\Scheduling\Schedule;
+use CjsConsole\Input\ArgvInput;
+use CjsConsole\Output\ConsoleOutput;
+
 class ConsoleApp {
 
     protected static $instance = null;
     protected $commands = [];
     protected $commandConfig = [];
 
-    private $autoExit = true;
-    private $catchExceptions = true;
+    private $autoExit = false;
+    private $catchExceptions = false;
 
     public static function getInstance() {
         if(static::$instance) {
@@ -46,8 +49,15 @@ class ConsoleApp {
     }
 
 
-    public function run($input, $output) {
+    public function run($input = null , $output = null) {
         echo '实例化所有command类' . PHP_EOL; //todo
+        if (null === $input) {
+            $input = new ArgvInput();
+        }
+        if (null === $output) {
+            $output = new ConsoleOutput();
+        }
+
 
         return 0;
         try {

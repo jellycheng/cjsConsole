@@ -11,7 +11,7 @@ class Kernel extends ConsoleKernel {
                             ];
 
 
-    //时间计划表配置
+    //时间计划表配置  * * * * * php /path/to/artisan schedule:run 1>> /dev/null 2>&1
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('inspire')->hourly();

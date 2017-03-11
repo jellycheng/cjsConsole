@@ -176,6 +176,9 @@ class Command{
         return $this->aliases;
     }
 
-
+    public function getDefinition()
+    {
+        return $this->definition;
+    }
 
 }
