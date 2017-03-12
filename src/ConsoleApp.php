@@ -10,6 +10,8 @@ use CjsConsole\Input\InputArgument;
 use CjsConsole\Input\InputOption;
 use CjsConsole\Contracts\OutputInterface;
 use CjsConsole\Contracts\InputInterface;
+use CjsConsole\Command\ListCommand;
+use CjsConsole\Command\HelpCommand;
 
 class ConsoleApp {
 
@@ -46,7 +48,9 @@ class ConsoleApp {
 
 
     protected function init() {
-
+        foreach ($this->getDefaultCommands() as $command) {
+            $this->add($command);
+        }
 
     }
 
@@ -93,7 +97,7 @@ class ConsoleApp {
     }
 
     public function run($input = null , $output = null) {
-        echo '开始实例化所有command类' . PHP_EOL;
+        echo '开始实例化所有command类...' . PHP_EOL;
         $this->resolveCommands($this->commandConfig);
 
         if (null === $input) {
@@ -266,9 +270,9 @@ class ConsoleApp {
         $command = $this->commands[$name];
         if ($this->wantHelps) {
             $this->wantHelps = false;
-//            $helpCommand = $this->get('help'); //命令帮助
-//            $helpCommand->setCommand($command);
-//            return $helpCommand;
+            $helpCommand = $this->get('help'); //命令帮助
+            $helpCommand->setCommand($command);
+            return $helpCommand;
         }
 
         return $command;
@@ -418,6 +422,11 @@ class ConsoleApp {
     private function getAbbreviationSuggestions($abbrevs)
     {
         return sprintf('%s, %s%s', $abbrevs[0], $abbrevs[1], count($abbrevs) > 2 ? sprintf(' and %d more', count($abbrevs) - 2) : '');
+    }
+
+    protected function getDefaultCommands()
+    {
+        return array(new HelpCommand(), new ListCommand());
     }
 
     public function getSchedule() {

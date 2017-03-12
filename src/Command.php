@@ -20,7 +20,7 @@ class Command{
     private $synopsis;
     private $helperSet;
 
-    protected $app;
+    protected $app; //这是console app对象
 
     protected $input;
     protected $output;
@@ -53,7 +53,7 @@ class Command{
         $this->getSynopsis();
 
         // add the application arguments and options
-        //$this->mergeApplicationDefinition();
+        $this->mergeApplicationDefinition();
 
         // bind the input against the command specific arguments/options
         try {
@@ -97,6 +97,26 @@ class Command{
 
     protected function interact(InputInterface $input, OutputInterface $output)
     {
+    }
+
+    public function mergeApplicationDefinition($mergeArgs = true)
+    {
+        if (null === $this->app || (true === $this->applicationDefinitionMerged && ($this->applicationDefinitionMergedWithArgs || !$mergeArgs))) {
+            return;
+        }
+
+        if ($mergeArgs) {//参数
+            $currentArguments = $this->definition->getArguments();
+            $this->definition->setArguments($this->app->getDefinition()->getArguments());
+            $this->definition->addArguments($currentArguments);
+        }
+        //选项
+        $this->definition->addOptions($this->app->getDefinition()->getOptions());
+
+        $this->applicationDefinitionMerged = true;
+        if ($mergeArgs) {
+            $this->applicationDefinitionMergedWithArgs = true;
+        }
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -241,9 +261,27 @@ class Command{
         return $this->aliases;
     }
 
+    public function getNativeDefinition()
+    {
+        return $this->getDefinition();
+    }
+
     public function getDefinition()
     {
         return $this->definition;
+    }
+
+    public function setDefinition($definition)
+    {
+        if ($definition instanceof InputDefinition) {
+            $this->definition = $definition;
+        } else {
+            $this->definition->setDefinition($definition);
+        }
+
+        $this->applicationDefinitionMerged = false;
+
+        return $this;
     }
 
 
