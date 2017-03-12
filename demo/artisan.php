@@ -4,7 +4,7 @@ require_once __DIR__ . '/common.php';
 
 
 
-//Console config todo
+\CjsConsole\ConsoleConfig::getInstance()->setEnvironments('dev');
 
 
 $input = null;

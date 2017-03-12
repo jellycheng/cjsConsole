@@ -43,13 +43,13 @@ class ScheduleRunCommand extends Command {
 	 */
 	public function fire()
 	{
-		$app = null;//app对象,todo
+		$app = $this->getApplication();
 		$events = $this->schedule->dueEvents($app);
 
 		foreach ($events as $event)
 		{
-			$this->line('<info>Running scheduled command:</info> '.$event->getSummaryForDisplay());
-
+			$this->line('<info>Running scheduled command:</info> ' . $event->getSummaryForDisplay());
+			//执行命令
 			$event->run($app);
 		}
 

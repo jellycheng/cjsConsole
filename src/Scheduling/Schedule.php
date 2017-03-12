@@ -31,7 +31,7 @@ class Schedule {
         return $this->events;
     }
 
-    //到期,执行所有事件
+    //到期,执行所有事件, 在ScheduleRunCommand类的fire()中有调用
     public function dueEvents($app = null)
     {
         return array_filter($this->events, function($event) use ($app)

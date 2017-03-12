@@ -9,6 +9,8 @@ class ConsoleConfig {
 
     protected $_isDownForMaintenance=false; //是否维护状态
 
+    protected $environments = 'production'; //当前运行环境
+
     protected function __construct()
     {
 
@@ -49,6 +51,22 @@ class ConsoleConfig {
     public function isDownForMaintenance()
     {
         return $this->_isDownForMaintenance;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEnvironments()
+    {
+        return $this->environments;
+    }
+
+    /**
+     * @param string $environments
+     */
+    public function setEnvironments($environments)
+    {
+        $this->environments = $environments;
     }
 
 

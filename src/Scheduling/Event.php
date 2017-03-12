@@ -5,6 +5,7 @@ use Closure;
 use CjsConsole\Process\Process;
 use CjsConsole\Carbon;
 use CjsCron\CronExpression;
+use CjsConsole\ConsoleConfig;
 
 class Event{
 
@@ -58,6 +59,9 @@ class Event{
      */
     protected $description;
 
+    //执行命令对象
+    protected $processObject = null;
+
     /**
      * @param  string  $command 命令
      * @return void
@@ -67,18 +71,26 @@ class Event{
         $this->command = $command;
     }
 
+    public function setProcessObject($process) {
+        $this->processObject = $process;
+        return $this;
+    }
+
+    public function getProcessObject() {
+        return $this->processObject?: new Process();
+    }
+
     /**
-     * @param  app对象
+     *
+     * @param $container app对象,console app object
      * @return void
      */
-    public function run(Container $container)
+    public function run($container = null)
     {
         if (count($this->afterCallbacks) > 0)
         {
             $this->runCommandInForeground($container);
-        }
-        else
-        {
+        } else {
             $this->runCommandInBackground();
         }
     }
@@ -99,11 +111,9 @@ class Event{
      * @param  $container  app对象
      * @return void
      */
-    protected function runCommandInForeground(Container $container)
+    protected function runCommandInForeground($container=null)
     {
-        (new Process(
-            trim($this->buildCommand(), '& '), \CjsConsole\base_path(), null, null, null
-        ))->run();
+        $this->getProcessObject()->setCmd(trim($this->buildCommand(), '& '))->setCwd(\CjsConsole\base_path())->run();
 
         $this->callAfterCallbacks($container);
     }
@@ -114,11 +124,13 @@ class Event{
      * @param  $container
      * @return void
      */
-    protected function callAfterCallbacks(Container $container)
+    protected function callAfterCallbacks($container)
     {
         foreach ($this->afterCallbacks as $callback)
         {
-            $container->call($callback);
+            if(is_object($container)) {
+                $container->call($callback);
+            }
         }
     }
 
@@ -135,16 +147,16 @@ class Event{
      * @param $app
      * @return bool
      */
-    public function isDue($app)
+    public function isDue($app = null)
     {
         if ( ! $this->runsInMaintenanceMode() && \CjsConsole\isDownForMaintenance())
         {
             return false;
         }
-
+        //return $this->expressionPasses();
         return $this->expressionPasses() &&
-        $this->filtersPass($app) &&
-        $this->runsInEnvironment($app->environment());
+                $this->filtersPass($app) &&
+                $this->runsInEnvironment(ConsoleConfig::getInstance()->getEnvironments());
     }
 
     /**
@@ -167,11 +179,12 @@ class Event{
     /**
      * Determine if the filters pass for the event.
      *
-     * @param  \Illuminate\Contracts\Foundation\Application  $app
+     * @param $app = console app 对象
      * @return bool
      */
-    protected function filtersPass(Application $app)
+    protected function filtersPass($app)
     {
+
         if (($this->filter && ! $app->call($this->filter)) ||
             $this->reject && $app->call($this->reject))
         {
@@ -245,7 +258,7 @@ class Event{
     }
 
     /**
-     * Schedule the event to run daily at a given time (10:00, 19:30, etc).
+     * Schedule the event to run daily at a given time (10:00, 19:30, etc 时:分 格式).
      *
      * @param  string  $time
      * @return $this
@@ -556,6 +569,7 @@ class Event{
     }
 
     /**
+     * 设置描述
      * @param  string  $description
      * @return $this
      */
