@@ -62,6 +62,9 @@ class Event{
     //执行命令对象
     protected $processObject = null;
 
+
+    protected $curlObj = null;
+
     /**
      * @param  string  $command 命令
      * @return void
@@ -79,6 +82,24 @@ class Event{
     public function getProcessObject() {
         return $this->processObject?: new Process();
     }
+
+    /**
+     * @return null
+     */
+    public function getCurlObj()
+    {
+        return $this->curlObj;
+    }
+
+    /**
+     * @param null $curlObj
+     */
+    public function setCurlObj($curlObj)
+    {
+        $this->curlObj = $curlObj;
+    }
+
+
 
     /**
      *
@@ -553,7 +574,7 @@ class Event{
      */
     public function thenPing($url)
     {
-        return $this->then(function() use ($url) { (new HttpClient)->get($url); });
+        return $this->then(function() use ($url) { $this->getCurlObj()->get($url); });
     }
 
     /**
