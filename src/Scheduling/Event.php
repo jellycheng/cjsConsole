@@ -4,6 +4,7 @@ namespace CjsConsole\Scheduling;
 use Closure;
 use CjsConsole\Process\Process;
 use CjsConsole\Carbon;
+use CjsCron\CronExpression;
 
 class Event{
 

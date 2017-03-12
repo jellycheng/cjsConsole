@@ -1,4 +1,5 @@
-<?php namespace Illuminate\Console\Scheduling;
+<?php
+namespace CjsConsole\Scheduling;
 
 use CjsConsole\Command;
 

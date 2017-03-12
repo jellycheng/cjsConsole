@@ -221,6 +221,11 @@ class ConsoleApp {
         return $this->get($exact ? $name : reset($commands));
     }
 
+    public function has($name)
+    {
+        return isset($this->commands[$name]);
+    }
+
     public function getNamespaces()
     {
         $namespaces = array();
@@ -236,7 +241,7 @@ class ConsoleApp {
 
     public function findNamespace($namespace)
     {
-        $allNamespaces = $this->getNamespaces();
+        $allNamespaces = $this->getNamespaces();var_dump($allNamespaces);
         $expr = preg_replace_callback('{([^:]+|)}', function ($matches) { return preg_quote($matches[1]).'[^:]*'; }, $namespace);
         $namespaces = preg_grep('{^'.$expr.'}', $allNamespaces);
 
@@ -417,6 +422,29 @@ class ConsoleApp {
             }
         }
         return $namespaces;
+    }
+
+    public function all($namespace = null)
+    {
+        if (null === $namespace) {
+            return $this->commands;
+        }
+
+        $commands = array();
+        foreach ($this->commands as $name => $command) {
+            if ($namespace === $this->extractNamespace($name, substr_count($namespace, ':') + 1)) {
+                $commands[$name] = $command;
+            }
+        }
+
+        return $commands;
+    }
+
+    public function extractNamespace($name, $limit = null)
+    {
+        $parts = explode(':', $name);
+        array_pop($parts);
+        return implode(':', null === $limit ? $parts : array_slice($parts, 0, $limit));
     }
 
     private function getAbbreviationSuggestions($abbrevs)
