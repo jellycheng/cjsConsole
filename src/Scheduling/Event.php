@@ -97,6 +97,7 @@ class Event{
     public function setCurlObj($curlObj)
     {
         $this->curlObj = $curlObj;
+        return $this;
     }
 
 
