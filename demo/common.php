@@ -21,24 +21,6 @@ if(file_exists($vendorFile)) {
 
     });
 
-
-    spl_autoload_register(function ($class) {
-        $ns = 'ConsoleDemo';
-        $base_dir = __DIR__ . '/';
-        $prefix_len = strlen($ns);
-        if (substr($class, 0, $prefix_len) !== $ns) {
-            return;
-        }
-        // strip the prefix off the class
-        $class = substr($class, $prefix_len);
-        // a partial filename
-        $file = $base_dir .str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php';
-        if (is_readable($file)) {
-            require $file;
-        }
-
-    });
-
     $_cronTmpDir = dirname(dirname(__DIR__)) . '/cjsCron/';
     if(is_dir($_cronTmpDir)) {
         spl_autoload_register(function ($class) use ($_cronTmpDir) {
@@ -60,3 +42,21 @@ if(file_exists($vendorFile)) {
     }
 
 }
+
+spl_autoload_register(function ($class) {
+    $ns = 'ConsoleDemo';
+    $base_dir = __DIR__ . '/';
+    $prefix_len = strlen($ns);
+    if (substr($class, 0, $prefix_len) !== $ns) {
+        return;
+    }
+    // strip the prefix off the class
+    $class = substr($class, $prefix_len);
+    // a partial filename
+    $file = $base_dir .str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php';
+    if (is_readable($file)) {
+        require $file;
+    }
+
+});
+

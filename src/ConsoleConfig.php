@@ -10,6 +10,8 @@ class ConsoleConfig {
     protected $_isDownForMaintenance=false; //是否维护状态
 
     protected $environments = 'production'; //当前运行环境
+    
+    protected $debug = false;
 
     protected function __construct()
     {
@@ -24,6 +26,24 @@ class ConsoleConfig {
         return static::$instance;
     }
 
+    /**
+     * @return boolean
+     */
+    public function isDebug()
+    {
+        return $this->debug;
+    }
+
+    /**
+     * @param boolean $isDebug
+     */
+    public function setDebug($debug = true)
+    {
+        $this->debug = $debug;
+        return $this;
+    }
+    
+    
     public function getCrontabEntryPath() {
         return $this->_crontabEntryPath;
     }
@@ -67,6 +87,7 @@ class ConsoleConfig {
     public function setEnvironments($environments)
     {
         $this->environments = $environments;
+        return $this;
     }
 
 

@@ -1,5 +1,6 @@
 <?php
 
+//file_put_contents(__DIR__ . '/tmp.log', mt_rand(0, 9999), FILE_APPEND);
 /**
     array (
         0 => 'make',

@@ -32,3 +32,21 @@ function share(Closure $closure)
     };
 }
 
+
+function isWin() {
+    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function debug($str) {
+    if(is_array($str)) {
+        $str = var_export($str, true);
+    }
+    if(isWin()) {
+        $str = mb_convert_encoding($str, 'gbk', 'utf-8');    
+    }
+    echo $str;
+}

@@ -97,7 +97,9 @@ class ConsoleApp {
     }
 
     public function run($input = null , $output = null) {
-        echo '开始实例化所有command类...' . PHP_EOL;
+        if(ConsoleConfig::getInstance()->isDebug()) {
+            \CjsConsole\debug('开始实例化所有command类...' . PHP_EOL);
+        }
         $this->resolveCommands($this->commandConfig);
 
         if (null === $input) {

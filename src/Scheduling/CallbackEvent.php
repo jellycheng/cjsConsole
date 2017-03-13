@@ -24,7 +24,7 @@ class CallbackEvent extends Event {
      * @param  $container
      * @return mixed
      */
-    public function run(Container $container)
+    public function run($container)
     {
         $response = $container->call($this->callback, $this->parameters);
 
