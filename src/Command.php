@@ -199,6 +199,20 @@ class Command{
         return $this->helperSet;
     }
 
+    public function getProcessedHelp()
+    {
+        $name = $this->name;
+        $placeholders = array(
+                                '%command.name%',
+                                '%command.full_name%',
+                            );
+        $replacements = array(
+                            $name,
+                            $_SERVER['PHP_SELF'].' '.$name,
+                        );
+        return str_replace($placeholders, $replacements, $this->getHelp());
+    }
+
     public function setCode($code)
     {
         if (!is_callable($code)) {
@@ -255,6 +269,21 @@ class Command{
         return $this->help;
     }
 
+
+    public function setAliases($aliases)
+    {
+        if (!is_array($aliases) && !$aliases instanceof \Traversable) {
+            throw new \InvalidArgumentException('$aliases must be an array or an instance of \Traversable');
+        }
+
+        foreach ($aliases as $alias) {
+            $this->validateName($alias);
+        }
+
+        $this->aliases = $aliases;
+
+        return $this;
+    }
 
     public function getAliases()
     {

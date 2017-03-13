@@ -1,7 +1,7 @@
 <?php
 namespace CjsConsole\Helper;
 
-use CjsConsole\Descriptor\DescriptorInterface;
+use CjsConsole\Contracts\DescriptorInterface;
 use CjsConsole\Descriptor\JsonDescriptor;
 use CjsConsole\Descriptor\MarkdownDescriptor;
 use CjsConsole\Descriptor\TextDescriptor;

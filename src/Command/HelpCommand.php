@@ -7,6 +7,7 @@ use CjsConsole\Input\InputOption;
 use CjsConsole\Contracts\InputInterface;
 use CjsConsole\Contracts\OutputInterface;
 use CjsConsole\Command;
+use CjsConsole\Helper\DescriptorHelper;
 
 /**
  * 命令帮助类
@@ -70,11 +71,11 @@ EOF
 
         echo "help todo " . PHP_EOL; //代码代完善
 
-//        $helper = new DescriptorHelper();
-//        $helper->describe($output, $this->command, array(
-//            'format' => $input->getOption('format'),
-//            'raw' => $input->getOption('raw'),
-//        ));
+        $helper = new DescriptorHelper();
+        $helper->describe($output, $this->command, array(
+            'format' => $input->getOption('format'),
+            'raw' => $input->getOption('raw'),
+        ));
 
         $this->command = null;
     }

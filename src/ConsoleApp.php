@@ -383,6 +383,11 @@ class ConsoleApp {
         }
     }
 
+    public function getHelp()
+    {
+        return $this->getLongVersion();
+    }
+
     public function getLongVersion()
     {
         if ('UNKNOWN' !== $this->getName() && 'UNKNOWN' !== $this->getVersion()) {

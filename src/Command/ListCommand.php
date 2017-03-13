@@ -7,6 +7,8 @@ use CjsConsole\Contracts\InputInterface;
 use CjsConsole\Contracts\OutputInterface;
 use CjsConsole\Input\InputDefinition;
 use CjsConsole\Command;
+use CjsConsole\Helper\DescriptorHelper;
+
 /**
  * 列出所有命令
  */
@@ -58,13 +60,13 @@ EOF
         if ($input->getOption('xml')) {
             $input->setOption('format', 'xml');
         }
-        echo "list todo " . PHP_EOL; //todo
-//        $helper = new DescriptorHelper();
-//        $helper->describe($output, $this->getApplication(), array(
-//            'format' => $input->getOption('format'),
-//            'raw_text' => $input->getOption('raw'),
-//            'namespace' => $input->getArgument('namespace'),
-//        ));
+
+        $helper = new DescriptorHelper();
+        $helper->describe($output, $this->getApplication(), array(
+            'format' => $input->getOption('format'),
+            'raw_text' => $input->getOption('raw'),
+            'namespace' => $input->getArgument('namespace'),
+        ));
     }
 
     /**
