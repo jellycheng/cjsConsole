@@ -11,7 +11,9 @@ class ConsoleConfig {
 
     protected $environments = 'production'; //当前运行环境
     
-    protected $debug = false;
+    protected $debug = false;   //是否开启debug
+
+    protected $prefixArtisan = "artisan"; //artisan命令前缀  如 artisan user_service
 
     protected function __construct()
     {
@@ -42,7 +44,24 @@ class ConsoleConfig {
         $this->debug = $debug;
         return $this;
     }
-    
+
+    /**
+     * @return string
+     */
+    public function getPrefixArtisan()
+    {
+        return $this->prefixArtisan?:'artisan';
+    }
+
+    /**
+     * @param string $prefixArtisan
+     */
+    public function setPrefixArtisan($prefixArtisan)
+    {
+        $this->prefixArtisan = $prefixArtisan;
+        return $this;
+    }
+
     
     public function getCrontabEntryPath() {
         return $this->_crontabEntryPath;

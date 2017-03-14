@@ -16,7 +16,8 @@ class Schedule {
 
     public function command($command)
     {//调用php的artisan文件 参数是命令
-        return $this->exec(PHP_BINARY . ' artisan ' . $command);
+        $artisan = \CjsConsole\ConsoleConfig::getInstance()->getPrefixArtisan()?:' artisan ';
+        return $this->exec(sprintf('%s %s %s' ,PHP_BINARY, trim($artisan), $command));
     }
 
     public function exec($command)
