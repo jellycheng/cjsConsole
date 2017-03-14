@@ -3,7 +3,7 @@ namespace CjsConsole;
 
 use CjsConsole\Scheduling\Schedule;
 use CjsConsole\Input\ArgvInput;
-use CjsConsole\input\ArrayInput;
+use CjsConsole\Input\ArrayInput;
 use CjsConsole\Output\ConsoleOutput;
 use CjsConsole\Input\InputDefinition;
 use CjsConsole\Input\InputArgument;
