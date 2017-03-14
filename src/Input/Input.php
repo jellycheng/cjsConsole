@@ -1,5 +1,5 @@
 <?php
-namespace CjsConsole\input;
+namespace CjsConsole\Input;
 use CjsConsole\Contracts\InputInterface;
 
 abstract class Input implements InputInterface

@@ -1,5 +1,5 @@
 <?php
-namespace CjsConsole\input;
+namespace CjsConsole\Input;
 /**
  * $input = new ArrayInput(array('name' => 'foo', '--bar' => 'foobar'));
  *

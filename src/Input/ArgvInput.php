@@ -1,5 +1,5 @@
 <?php
-namespace CjsConsole\input;
+namespace CjsConsole\Input;
 
 /**
  * cli执行
