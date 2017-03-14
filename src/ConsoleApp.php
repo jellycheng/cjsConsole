@@ -479,8 +479,10 @@ class ConsoleApp {
     }
 
     //todo
-    public function call($callback) {
-        $param = [];
+    public function call($callback, $param = []) {
+        if(is_array($param)) {
+            $param = [$param];
+        }
         return call_user_func_array($callback, $param);
     }
 
