@@ -114,7 +114,7 @@ class ConsoleApp {
         try {
             $exitCode = $this->doRun($input, $output);
         } catch (\Exception $e) {
-            echo $e->getMessage();
+            //echo $e->getMessage();
             if (!$this->catchExceptions) {
                 throw $e;
             }
@@ -243,7 +243,7 @@ class ConsoleApp {
 
     public function findNamespace($namespace)
     {
-        $allNamespaces = $this->getNamespaces();var_dump($allNamespaces);
+        $allNamespaces = $this->getNamespaces();
         $expr = preg_replace_callback('{([^:]+|)}', function ($matches) { return preg_quote($matches[1]).'[^:]*'; }, $namespace);
         $namespaces = preg_grep('{^'.$expr.'}', $allNamespaces);
 
