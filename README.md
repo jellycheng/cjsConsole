@@ -24,6 +24,8 @@ git push origin master
 ###https://github.com/mtdowling/cron-expression
 
 ###http://guzzlephp.org/
+"guzzlehttp/guzzle": "~4.0|~5.0|~6.0"
+
 
 
 ```

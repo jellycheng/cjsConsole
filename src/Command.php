@@ -4,6 +4,8 @@ namespace CjsConsole;
 use CjsConsole\Input\InputDefinition;
 use CjsConsole\Contracts\OutputInterface;
 use CjsConsole\Contracts\InputInterface;
+use CjsConsole\Input\InputOption;
+use CjsConsole\Input\InputArgument;
 
 class Command{
 
@@ -328,5 +330,50 @@ class Command{
 
         return $this->synopsis;
     }
+
+    public function addArgument($name, $mode = null, $description = '', $default = null)
+    {
+        $this->definition->addArgument(new InputArgument($name, $mode, $description, $default));
+
+        return $this;
+    }
+
+    public function addOption($name, $shortcut = null, $mode = null, $description = '', $default = null)
+    {
+        $this->definition->addOption(new InputOption($name, $shortcut, $mode, $description, $default));
+
+        return $this;
+    }
+
+
+    protected function specifyParameters()
+    {
+        foreach ($this->getArguments() as $arguments)
+        {
+            call_user_func_array(array($this, 'addArgument'), $arguments);
+        }
+
+        foreach ($this->getOptions() as $options)
+        {
+            call_user_func_array(array($this, 'addOption'), $options);
+        }
+    }
+
+    //获取cli参数值
+    public function argument($key = null)
+    {
+        if (is_null($key)) return $this->input->getArguments();
+
+        return $this->input->getArgument($key);
+    }
+
+    //获取cli选项值
+    public function option($key = null)
+    {
+        if (is_null($key)) return $this->input->getOptions();
+
+        return $this->input->getOption($key);
+    }
+
 
 }
