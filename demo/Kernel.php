@@ -3,6 +3,8 @@ namespace ConsoleDemo;
 
 use CjsConsole\Scheduling\Schedule;
 use CjsConsole\Kernel as ConsoleKernel;
+
+//file: App/Console/Kernel.php
 class Kernel extends ConsoleKernel {
 
     //配置命令

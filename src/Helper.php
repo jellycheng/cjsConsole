@@ -50,3 +50,22 @@ function debug($str) {
     }
     echo $str;
 }
+
+function str_contains($haystack, $needles)
+{
+    foreach ((array) $needles as $needle)
+    {
+        if ($needle != '' && strpos($haystack, $needle) !== false) return true;
+    }
+    return false;
+}
+
+
+function starts_with($haystack, $needles)
+{
+    foreach ((array) $needles as $needle)
+    {
+        if ($needle != '' && strpos($haystack, $needle) === 0) return true;
+    }
+    return false;
+}

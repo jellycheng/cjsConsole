@@ -8,7 +8,9 @@
         2 => 'make:controller:hi',
     )
  */
-var_export(extractAllNamespaces('make:controller:hi:xyz'));
+$a = '';
+var_dump(array_shift($a));
+//var_export(extractAllNamespaces('make:controller:hi:xyz'));
 echo php_uname('s') . PHP_EOL; //操作系统名称: Darwin
 
 function extractAllNamespaces($name)

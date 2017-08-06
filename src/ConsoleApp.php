@@ -54,18 +54,31 @@ class ConsoleApp {
 
     }
 
+    public function setCatchExceptions($bool = false) {
+        $this->catchExceptions = $bool;
+        return $this;
+    }
+
+    public function getCatchExceptions() {
+        return $this->catchExceptions;
+    }
+
     public function setCommandConfig($command) {
         $this->commandConfig = array_merge($this->commandConfig, (array)$command);
         return $this;
     }
 
-    public function setCommands($command) {
+    public function setCommands(Command $command) {
 
         $this->commands[$command->getName()] = $command;
         foreach ($command->getAliases() as $alias) {
             $this->commands[$alias] = $command;
         }
         return $command;
+    }
+
+    public function getCommands() {
+        return $this->commands;
     }
 
     public function resolveCommands($commands)

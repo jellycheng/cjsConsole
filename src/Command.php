@@ -42,6 +42,7 @@ class Command{
             throw new \LogicException(sprintf('The command defined in "%s" cannot have an empty name.', get_class($this)));
         }
 
+        $this->specifyParameters();
     }
 
     protected function configure()
@@ -63,6 +64,8 @@ class Command{
         } catch (\Exception $e) {
             if (!$this->ignoreValidationErrors) {
                 throw $e;
+            } else {
+                $output->writeln(sprintf('<comment>%s</comment>', $e->getMessage()));
             }
         }
 
@@ -184,6 +187,7 @@ class Command{
         } else {
             $this->helperSet = null;
         }
+        return $this;
     }
 
     public function getApplication()

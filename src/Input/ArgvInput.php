@@ -14,7 +14,7 @@ class ArgvInput extends Input
     public function __construct(array $argv = null, InputDefinition $definition = null)
     {
         if (null === $argv) {
-            $argv = $_SERVER['argv'];
+            $argv = isset($_SERVER['argv'])?$_SERVER['argv']:[];
         }
 
         //去掉cli入口文件名,即去掉第1个单元

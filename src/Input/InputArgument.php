@@ -5,11 +5,11 @@ namespace CjsConsole\Input;
 class InputArgument
 {
     const REQUIRED = 1;
-    const OPTIONAL = 2; //值只能是1-7
+    const OPTIONAL = 2;
     const IS_ARRAY = 4;
 
     private $name;
-    private $mode;
+    private $mode; //值只能是1,2,4
     private $default;
     private $description;
 
