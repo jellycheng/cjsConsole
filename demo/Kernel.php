@@ -10,6 +10,7 @@ class Kernel extends ConsoleKernel {
     //配置命令
     protected $commands = [
                             'ConsoleDemo\Commands\Inspire',
+                            'ConsoleDemo\Console\Commands\fooCommand',
                             ];
 
 
