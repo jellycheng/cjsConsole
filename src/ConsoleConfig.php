@@ -4,7 +4,7 @@ namespace CjsConsole;
 class ConsoleConfig {
 
     protected static $instance = null;
-
+    //php工作目录
     protected $_crontabEntryPath = null;
 
     protected $_isDownForMaintenance=false; //是否维护状态

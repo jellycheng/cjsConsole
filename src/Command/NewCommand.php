@@ -25,7 +25,8 @@ class NewCommand extends Command
 
     /**
      * Execute the command.
-     *
+     * 下载dev分支的laravel： php demo/createApp.php new --dev abc
+     * 下载master分支的laravel：  php demo/createApp.php new abc
      * @param  \CjsConsole\Input\InputInterface  $input
      * @param  \CjsConsole\Output\OutputInterface  $output
      * @return void
@@ -81,7 +82,8 @@ class NewCommand extends Command
     protected function verifyApplicationDoesntExist($directory)
     {
         if ((is_dir($directory) || is_file($directory)) && $directory != getcwd()) {
-            throw new RuntimeException('Application already exists!');
+            echo $directory . " Application already exists!" . PHP_EOL;
+            throw new RuntimeException($directory . ' Application already exists!');
         }
     }
 
@@ -95,8 +97,8 @@ class NewCommand extends Command
     }
     /**
      * 下载zip文件
-     * @param  string  $zipFile
-     * @param  string  $version
+     * @param  string  $zipFile 保存文件位置及文件名
+     * @param  string  $version 下载的版本
      * @return $this
      */
     protected function download($zipFile, $version = 'master')
@@ -117,8 +119,8 @@ class NewCommand extends Command
 
     /**
      * 解压zip文件到指定目录
-     * @param  string  $zipFile
-     * @param  string  $directory
+     * @param  string  $zipFile 原zip文件
+     * @param  string  $directory 解压目录
      * @return $this
      */
     protected function extract($zipFile, $directory)
@@ -132,7 +134,7 @@ class NewCommand extends Command
 
     /**
      * 删除下载的zip文件
-     * @param  string  $zipFile
+     * @param  string  $zipFile 原zip文件
      * @return $this
      */
     protected function cleanUp($zipFile)

@@ -178,7 +178,7 @@ class Command{
     {
         return $this->output;
     }
-
+    //注入console app对象
     public function setApplication($application = null)
     {
         $this->app = $application;

@@ -28,6 +28,8 @@ class ConsoleApp {
     private $catchExceptions = false;
     protected $definition;
 
+    private $helperSet; //帮助工具
+
     public static function getInstance($name = 'UNKNOWN', $version = 'UNKNOWN') {
         if(static::$instance) {
             return static::$instance;
@@ -159,7 +161,7 @@ class ConsoleApp {
             $output->writeln($this->getLongVersion());
             return 0;
         }
-        $name = $this->getCommandName($input);//分析命令行 获取要执行的命令
+        $name = $this->getCommandName($input);//分析命令行 获取要执行的命令(即获取cli第1个参数)
         if (true === $input->hasParameterOption(array('--help', '-h'))) {
             if (!$name) {
                 $name = 'help';
@@ -498,5 +500,22 @@ class ConsoleApp {
         }
         return call_user_func_array($callback, $param);
     }
+
+    /**
+     * @return mixed
+     */
+    public function getHelperSet()
+    {
+        return $this->helperSet;
+    }
+
+    /**
+     * @param mixed $helperSet
+     */
+    public function setHelperSet($helperSet)
+    {
+        $this->helperSet = $helperSet;
+    }
+
 
 }
