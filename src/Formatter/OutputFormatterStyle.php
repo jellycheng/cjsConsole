@@ -33,12 +33,12 @@ class OutputFormatterStyle implements OutputFormatterStyleInterface
         'conceal' => array('set' => 8, 'unset' => 28),
     );
 
-    private $foreground;
-    private $background;
-    private $options = array();
+    private $foreground; //设置当前前景色样式
+    private $background; //设置当前背景色样式
+    private $options = array(); //其它当前其它样式
 
 
-    public function __construct($foreground = null, $background = null, array $options = array())
+    public function __construct($foreground = null, $background = null, $options = array())
     {
         if (null !== $foreground) {
             $this->setForeground($foreground);
@@ -46,7 +46,7 @@ class OutputFormatterStyle implements OutputFormatterStyleInterface
         if (null !== $background) {
             $this->setBackground($background);
         }
-        if (count($options)) {
+        if (is_array($options) && count($options)) {
             $this->setOptions($options);
         }
     }
@@ -129,6 +129,11 @@ class OutputFormatterStyle implements OutputFormatterStyleInterface
         }
     }
 
+    /**
+     * 给内容拼接样式
+     * @param $text 内容
+     * @return string
+     */
     public function apply($text)
     {
         $setCodes = array();

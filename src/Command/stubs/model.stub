@@ -4,6 +4,36 @@ use Illuminate\Database\Eloquent\Model;
 
 class {{class}} extends Model {
 
-	//
+    /**
+     * 设置创建时间字段
+     */
+    const CREATED_AT = 'created_at';
+
+    /**
+     * 设置更新时间字段
+     */
+    const UPDATED_AT = 'updated_at';
+
+    /**
+     * 设置删除时间字段
+     */
+    //const DELETED_AT = 'deleted_at';
+
+    public $timestamps = false;
+
+    public function __construct()
+    {
+        \App::make('database');
+        parent::__construct();
+    }
+
+    //连接代号
+	protected $connection = 'db_zhuan';
+	//表名 t_user
+    protected $table = 'user';
+    //主键ID
+    protected $primaryKey = 'userid';
+
+    //其它方法
 
 }

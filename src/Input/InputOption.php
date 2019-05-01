@@ -1,7 +1,7 @@
 <?php
 namespace CjsConsole\Input;
 
-
+//单个选项对象
 class InputOption
 {
     const VALUE_NONE = 1;   //标记不接收值
@@ -9,12 +9,19 @@ class InputOption
     const VALUE_OPTIONAL = 4; //标记值可选
     const VALUE_IS_ARRAY = 8;  //标记值为数组
 
-    private $name;  //选项名  --help
+    private $name;  //长选项名  --help
     private $shortcut; //选项短名  -h,多个用|分割,如 '-v|vv|vvv'
     private $mode;  //值是VALUE_*常量的值之一, 1-15
     private $default;  //选项默认值
     private $description; //选项描述
 
+    /**
+     * @param $name 长选项名，必须
+     * @param null $shortcut 短选项名，可选，也支持多个 v|vv|vvv
+     * @param null $mode
+     * @param string $description 选项说明
+     * @param null $default 默认值
+     */
     public function __construct($name, $shortcut = null, $mode = null, $description = '', $default = null)
     {
         if (0 === strpos($name, '--')) {
@@ -83,7 +90,7 @@ class InputOption
     {
         return self::VALUE_REQUIRED === (self::VALUE_REQUIRED & $this->mode);
     }
-
+    //可选
     public function isValueOptional()
     {
         return self::VALUE_OPTIONAL === (self::VALUE_OPTIONAL & $this->mode);
@@ -96,11 +103,11 @@ class InputOption
 
     public function setDefault($default = null)
     {
-        if (self::VALUE_NONE === (self::VALUE_NONE & $this->mode) && null !== $default) {
+        if (self::VALUE_NONE === (self::VALUE_NONE & $this->mode) && null !== $default) {//不能接收值则不能设置默认值
             throw new \LogicException('Cannot set a default value when using InputOption::VALUE_NONE mode.');
         }
 
-        if ($this->isArray()) {
+        if ($this->isArray()) {//如果选项值为数组，则默认值也必须是数组
             if (null === $default) {
                 $default = array();
             } elseif (!is_array($default)) {

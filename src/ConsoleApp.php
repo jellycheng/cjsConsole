@@ -12,7 +12,7 @@ use CjsConsole\Contracts\OutputInterface;
 use CjsConsole\Contracts\InputInterface;
 use CjsConsole\Command\ListCommand;
 use CjsConsole\Command\HelpCommand;
-
+//应用对象 - 单例
 class ConsoleApp {
 
     protected static $instance = null;
@@ -21,7 +21,7 @@ class ConsoleApp {
 
     protected $name;
     protected $version;
-    protected $defaultCommand;
+    protected $defaultCommand; //默认命令
     protected $wantHelps = false; //标记是否获取帮助
 
     private $autoExit = false;
@@ -344,7 +344,7 @@ class ConsoleApp {
     protected function getDefaultInputDefinition()
     {
         return new InputDefinition(array(
-            new InputArgument('command', InputArgument::REQUIRED, 'The command to execute'),
+            new InputArgument('command', InputArgument::REQUIRED, 'The command to execute'),//cli 第1个参数（即artisan后的命令名）
 
             new InputOption('--help',           '-h', InputOption::VALUE_NONE, 'Display this help message'),
             new InputOption('--quiet',          '-q', InputOption::VALUE_NONE, 'Do not output any message'),
@@ -424,6 +424,7 @@ class ConsoleApp {
         return $this->version;
     }
 
+    //获取命令名，其实就是获取cli第1个参数
     protected function getCommandName(InputInterface $input)
     {
         return $input->getFirstArgument();
@@ -431,7 +432,6 @@ class ConsoleApp {
 
     private function extractAllNamespaces($name)
     {
-        //则返回除了最后一个元素外的所有元素
         $parts = explode(':', $name, -1);
         $namespaces = array();
         foreach ($parts as $part) {

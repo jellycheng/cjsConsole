@@ -2,7 +2,7 @@
 <?php
 require_once __DIR__ . '/common.php';
 
-$consoleCfgObj = \CjsConsole\ConsoleConfig::getInstance()->setEnvironments('dev')->setDebug(true);
+$consoleCfgObj = \CjsConsole\ConsoleConfig::getInstance()->setEnvironments(env('APP_ENV', 'dev'))->setDebug(true);
 
 if(env('APP_ENV', 'dev') != 'dev') {
     $consoleCfgObj->setCrontabEntryPath("/data1/www/hf_entrance/console/microservice")->setPrefixArtisan(" artisan jigou-service ");
@@ -10,17 +10,18 @@ if(env('APP_ENV', 'dev') != 'dev') {
     $consoleCfgObj->setCrontabEntryPath(__DIR__ . '/');
 }
 
-$input = new \CjsConsole\input\ArgvInput();
-$ConsoleObj = \CjsConsole\ConsoleApp::getInstance("cjs console", '1.0.0');
-$kernel = new \ConsoleDemo\Kernel($ConsoleObj);
+$input = new \CjsConsole\Input\ArgvInput();//分析cli对象
+$consoleAppObj = \CjsConsole\ConsoleApp::getInstance("cjs console", '1.0.0');
+$kernel = new \ConsoleDemo\Kernel($consoleAppObj);//注入app对象
 
-$scheduleObj = new \CjsConsole\Scheduling\ScheduleRunCommand($ConsoleObj->getSchedule());
-$ConsoleObj->add($scheduleObj);//新增命令
+$scheduleObj = new \CjsConsole\Scheduling\ScheduleRunCommand($consoleAppObj->getSchedule());
+$consoleAppObj->add($scheduleObj);//新增命令
 
 $makeConsoleObj = new \CjsConsole\Command\MakeConsoleCommand();
-$ConsoleObj->add($makeConsoleObj->setAppPath(__DIR__)->setAppNamespace('App'));//新增命令
+//$makeConsoleObj->setStubFile(__DIR__ . '/doc.md');
+$consoleAppObj->add($makeConsoleObj->setAppPath(__DIR__)->setAppNamespace('ConsoleDemo'));//新增 make:console命令
 
-//var_export(array_keys($ConsoleObj->getCommands())); //打印所有命令名
+//var_export(array_keys($consoleAppObj->getCommands())); //打印所有命令名
 $status = $kernel->handle($input, new \CjsConsole\Output\ConsoleOutput());
 $kernel->terminate($input, $status);
 

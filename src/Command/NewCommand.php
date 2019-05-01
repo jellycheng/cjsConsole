@@ -19,7 +19,7 @@ class NewCommand extends Command
         $this
             ->setName('new')
             ->setDescription('Create a new application.')
-            ->addArgument('name', InputArgument::OPTIONAL)
+            ->addArgument('name', InputArgument::OPTIONAL, "application name")
             ->addOption('dev', null, InputOption::VALUE_NONE, 'Installs the latest "development" release');
     }
 

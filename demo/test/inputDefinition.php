@@ -20,9 +20,17 @@ $obj = new InputDefinition(array(
 ));
 
 
-echo $obj->getOption('version')->getName() . PHP_EOL;
+echo $obj->getOption('version')->getName() . PHP_EOL;//version
 //[-h|--help] [-q|--quiet] [-v|vv|vvv|--verbose] [-V|--version] [--ansi] [--no-ansi] [-n|--no-interaction] command
 echo $obj->getSynopsis() . PHP_EOL;
 
-
+//获取参数
+echo $obj->getArgument("command")->getName() . PHP_EOL;//command
+var_export($obj->getArgument("command"));
+echo PHP_EOL;
+try{
+    $obj->getArgument("nocmd123");
+}catch(\Exception $e) {
+    echo $e->getMessage() . PHP_EOL;
+}
 

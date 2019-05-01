@@ -14,7 +14,7 @@ class Command{
     private $processTitle;
     private $aliases = array();
     private $help;
-    private $description;
+    protected $description;
     private $ignoreValidationErrors = false;
     private $applicationDefinitionMerged = false;
     private $applicationDefinitionMergedWithArgs = false;

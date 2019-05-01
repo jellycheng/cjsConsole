@@ -6,20 +6,20 @@ use CjsConsole\Descriptor\XmlDescriptor;
 use CjsConsole\Output\BufferedOutput;
 
 /**
- *
+ * 定义参数和选项对象
  * $definition = new InputDefinition(array(
- *    new InputArgument('name', InputArgument::REQUIRED),
- *    new InputOption('foo', 'f', InputOption::VALUE_REQUIRED),
- *  ));
+ *                                      new InputArgument('name', InputArgument::REQUIRED),
+*                                       new InputOption('foo', 'f', InputOption::VALUE_REQUIRED),
+ *                                  ));
  *
  */
 class InputDefinition
 {
-    private $arguments = []; //['参数名1'=>对象,]
+    private $arguments = []; //['参数名1'=>参数对象,]
     private $requiredCount = 0; //必须参数个数
     private $hasAnArrayArgument = false;
     private $hasOptional;
-    private $options;//['选项'=>对象,]
+    private $options;//['选项名'=>选项对象,]
     private $shortcuts;//['短选项名'=>全选项名,]
 
     public function __construct(array $definition = array())

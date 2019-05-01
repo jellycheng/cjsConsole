@@ -4,12 +4,13 @@ require_once dirname(__DIR__) . '/common.php';
 
 use \CjsConsole\Input\InputOption;
 
+//单个选项对象 new InputOption('--长选项', '-短选项', InputOption::VALUE_NONE模式（1-15）, '选项描述', '选项默认值');
 $ioObj = new InputOption('--help', '-h', InputOption::VALUE_NONE, 'Display this help message');
 
-echo 'name: ' . $ioObj->getName() . PHP_EOL;
-echo 'shortcut: ' . $ioObj->getShortcut() . PHP_EOL;
+echo 'name: ' . $ioObj->getName() . PHP_EOL;//name: help
+echo 'shortcut: ' . $ioObj->getShortcut() . PHP_EOL;//shortcut: h
 echo 'default: ' . $ioObj->getDefault() . PHP_EOL;
-echo 'description: ' . $ioObj->getDescription() . PHP_EOL;
+echo 'description: ' . $ioObj->getDescription() . PHP_EOL;//description: Display this help message
 
 
 $ioObj = new InputOption('--quiet','-q', InputOption::VALUE_NONE, 'Do not output any message对选项的描述');

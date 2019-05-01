@@ -27,9 +27,9 @@ abstract class Input implements InputInterface
         $this->arguments = array();
         $this->options = array();
         $this->definition = $definition;
-        $this->parse();
+        $this->parse();//分析命令行参数
     }
-
+    //分析命令行参数
     abstract protected function parse();
 
     public function validate()

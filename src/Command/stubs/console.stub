@@ -8,14 +8,14 @@ class {{class}} extends Command {
 
 	/**
 	 * The console command name.
-	 *
+	 * 命令名 如： user:loginreport
 	 * @var string
 	 */
 	protected $name = '{{command}}';
 
 	/**
 	 * The console command description.
-	 *
+	 * 命令用途，描述
 	 * @var string
 	 */
 	protected $description = 'Command description.';
@@ -32,30 +32,30 @@ class {{class}} extends Command {
 	 */
 	public function handle()
 	{
-		//todo
+		//todo 这里写业务逻辑
 	}
 
 	/**
 	 * Get the console command arguments.
-	 *
+	 * 参数配置，无参数配置，则把这个方法删除
 	 * @return array
 	 */
 	protected function getArguments()
 	{
 		return [
-			['example', InputArgument::REQUIRED, 'An example argument.'],
+			['argname', InputArgument::REQUIRED, 'An example argument.'],
 		];
 	}
 
 	/**
 	 * Get the console command options.
-	 *
+	 * 选项配置，无选项配置，则把这个方法删除
 	 * @return array
 	 */
 	protected function getOptions()
 	{
 		return [
-			['example', null, InputOption::VALUE_OPTIONAL, 'An example option.', null],
+			['optionname', null, InputOption::VALUE_OPTIONAL, 'An example option.', null],
 		];
 	}
 

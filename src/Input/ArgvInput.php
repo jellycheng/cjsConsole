@@ -3,12 +3,12 @@ namespace CjsConsole\Input;
 
 /**
  * cli执行
- * $input = new ArgvInput(); 等价 $input = new ArgvInput($_SERVER['argv']);
+ * $input = new \CjsConsole\Input\ArgvInput(); 等价 $input = new \CjsConsole\Input\ArgvInput($_SERVER['argv']);
  *
  */
 class ArgvInput extends Input
 {
-    private $tokens;
+    private $tokens;//原始cli参数
     private $parsed;
 
     public function __construct(array $argv = null, InputDefinition $definition = null)

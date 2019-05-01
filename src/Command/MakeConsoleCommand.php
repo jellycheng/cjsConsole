@@ -31,8 +31,9 @@ class MakeConsoleCommand extends Command {
      */
     protected $type = 'Console command';
 
-    protected $appPath = '/tmp';
+    protected $appPath = '/tmp'; //生成的代码保存位置目录
     protected $appNamespace = 'App\\'; //app命名空间
+    protected $stubFile; //模板文件
 
 
     public function __construct($name = null)
@@ -51,7 +52,7 @@ class MakeConsoleCommand extends Command {
 //                            ));
     }
 
-
+    //设置生成的代码保存位置目录
     public function setAppPath($appPath) {
         $this->appPath = $appPath;
         return $this;
@@ -61,6 +62,24 @@ class MakeConsoleCommand extends Command {
         $this->appNamespace = $appNamespace;
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getStubFile()
+    {
+        return $this->stubFile;
+    }
+
+    /**
+     * @param mixed $stubFile
+     */
+    public function setStubFile($stubFile)
+    {
+        $this->stubFile = $stubFile;
+        return $this;
+    }
+
 
     /**
      * Execute the console command.
@@ -73,6 +92,7 @@ class MakeConsoleCommand extends Command {
             $name = $this->argument('name')?:'';
         } catch(\Exception $e) {
             echo $e->getMessage() . PHP_EOL;
+            exit();
         }
 
         $name = $this->parseName($name);//类的命名空间
@@ -154,7 +174,7 @@ class MakeConsoleCommand extends Command {
      */
     protected function getStub()
     {
-        return __DIR__.'/stubs/console.stub';
+        return $this->getStubFile()?:__DIR__.'/stubs/console.stub';
     }
 
     protected function getNamespace($name)

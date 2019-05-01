@@ -76,6 +76,7 @@ class ConsoleConfig {
     }
 
     /**
+     * 设置是否维护状态
      * @param boolean $isDownForMaintenance
      */
     public function setIsDownForMaintenance($isDownForMaintenance)
@@ -85,6 +86,7 @@ class ConsoleConfig {
     }
 
     /**
+     * 获取是否维护状态
      * @return boolean
      */
     public function isDownForMaintenance()
@@ -93,6 +95,7 @@ class ConsoleConfig {
     }
 
     /**
+     * 获取当前环境代号
      * @return string
      */
     public function getEnvironments()
@@ -101,6 +104,7 @@ class ConsoleConfig {
     }
 
     /**
+     * 设置环境代号
      * @param string $environments
      */
     public function setEnvironments($environments)

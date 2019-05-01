@@ -17,13 +17,13 @@ class ArrayInput extends Input
     public function getFirstArgument()
     {
         foreach ($this->parameters as $key => $value) {
-            if ($key && '-' === $key[0]) {
+            if ($key && '-' === $key[0]) {//跳过选项
                 continue;
             }
             return $value;
         }
     }
-
+    //数组key是否存在：参数或选项是否有一个存在
     public function hasParameterOption($values)
     {
         $values = (array) $values;
@@ -73,11 +73,11 @@ class ArrayInput extends Input
     protected function parse()
     {
         foreach ($this->parameters as $key => $value) {
-            if (0 === strpos($key, '--')) {
+            if (0 === strpos($key, '--')) {//长选项
                 $this->addLongOption(substr($key, 2), $value);
-            } elseif ('-' === $key[0]) {
+            } elseif ('-' === $key[0]) {//短选项
                 $this->addShortOption(substr($key, 1), $value);
-            } else {
+            } else {//参数
                 $this->addArgument($key, $value);
             }
         }
